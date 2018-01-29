@@ -1,0 +1,25 @@
+int yes;
+int no;
+yes=1;
+no=0;
+if(10>2) {print(yes);}
+if(10>=2) {print(yes);}
+if(10<2) {print(yes);}
+else {print(no);}
+if(10<=2) {print(yes);}
+else {print(no);}
+if(10==10) {print(yes);}
+if(10!=5){print(yes);}
+int a;
+int b;
+a=3;
+b=4;
+if(yes>no) {     
+        if(yes==no) {print(yes);}
+        else {print(no);}
+	print(a);
+}else{print(b);}
+
+
+
+

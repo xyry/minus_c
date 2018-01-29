@@ -1,0 +1,1119 @@
+语法
+
+    0 $accept: program $end
+
+    1 program: definition_or_statement
+    2        | program definition_or_statement
+
+    3 definition_or_statement: statement
+
+    4 statement_list: statement
+    5               | statement_list statement
+
+    6 expression: logical_expression
+    7           | IDENTIFIER ASSIGN expression
+
+    8 logical_expression: additive_expression
+    9                   | logical_expression NE additive_expression
+   10                   | logical_expression EQ additive_expression
+   11                   | logical_expression GT additive_expression
+   12                   | logical_expression GE additive_expression
+   13                   | logical_expression LT additive_expression
+   14                   | logical_expression LE additive_expression
+
+   15 additive_expression: multiplicative_expression
+   16                    | additive_expression ADD multiplicative_expression
+   17                    | additive_expression SUB multiplicative_expression
+
+   18 multiplicative_expression: primary_expression
+   19                          | multiplicative_expression MUL primary_expression
+   20                          | multiplicative_expression DIV primary_expression
+   21                          | multiplicative_expression MOD primary_expression
+
+   22 primary_expression: LP expression RP
+   23                   | IDENTIFIER
+   24                   | INT_LITERAL
+
+   25 statement: expression SEMICOLON
+   26          | PRINT LP expression RP SEMICOLON
+   27          | if_statement
+   28          | for_statement
+   29          | break_statement
+   30          | define_statement
+   31          | while_statement
+   32          | do_while_statement
+
+   33 define_statement: INT IDENTIFIER SEMICOLON
+
+   34 if_statement: IF LP expression RP block
+   35             | IF LP expression RP block ELSE block
+
+   36 while_statement: WHILE LP expression_opt RP block
+
+   37 do_while_statement: DO block WHILE LP expression_opt RP SEMICOLON
+
+   38 for_statement: FOR LP expression_opt SEMICOLON expression_opt SEMICOLON expression_opt RP block
+
+   39 break_statement: BREAK SEMICOLON
+
+   40 expression_opt: %empty
+   41               | expression
+
+   42 block: LC statement_list RC
+   43      | LC RC
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+INT_LITERAL (258) 24
+IDENTIFIER (259) 7 23 33
+IF (260) 34 35
+BREAK (261) 39
+FOR (262) 38
+WHILE (263) 36 37
+DO (264) 37
+LP (265) 22 26 34 35 36 37 38
+RP (266) 22 26 34 35 36 37 38
+LC (267) 42 43
+RC (268) 42 43
+SEMICOLON (269) 25 26 33 37 38 39
+ASSIGN (270) 7
+EQ (271) 10
+NE (272) 9
+GT (273) 11
+GE (274) 12
+LT (275) 13
+LE (276) 14
+ADD (277) 16
+SUB (278) 17
+MUL (279) 19
+DIV (280) 20
+MOD (281) 21
+PRINT (282) 26
+ELSE (283) 35
+INT (284) 33
+
+
+Nonterminals, with rules where they appear
+
+$accept (30)
+    左： 0
+program (31)
+    左： 1 2, 右： 0 2
+definition_or_statement (32)
+    左： 3, 右： 1 2
+statement_list (33)
+    左： 4 5, 右： 5 42
+expression (34)
+    左： 6 7, 右： 7 22 25 26 34 35 41
+logical_expression (35)
+    左： 8 9 10 11 12 13 14, 右： 6 9 10 11 12 13 14
+additive_expression (36)
+    左： 15 16 17, 右： 8 9 10 11 12 13 14 16 17
+multiplicative_expression (37)
+    左： 18 19 20 21, 右： 15 16 17 19 20 21
+primary_expression (38)
+    左： 22 23 24, 右： 18 19 20 21
+statement (39)
+    左： 25 26 27 28 29 30 31 32, 右： 3 4 5
+define_statement (40)
+    左： 33, 右： 30
+if_statement (41)
+    左： 34 35, 右： 27
+while_statement (42)
+    左： 36, 右： 31
+do_while_statement (43)
+    左： 37, 右： 32
+for_statement (44)
+    左： 38, 右： 28
+break_statement (45)
+    左： 39, 右： 29
+expression_opt (46)
+    左： 40 41, 右： 36 37 38
+block (47)
+    左： 42 43, 右： 34 35 36 37 38
+
+
+State 0
+
+    0 $accept: . program $end
+
+    INT_LITERAL  shift, and go to state 1
+    IDENTIFIER   shift, and go to state 2
+    IF           shift, and go to state 3
+    BREAK        shift, and go to state 4
+    FOR          shift, and go to state 5
+    WHILE        shift, and go to state 6
+    DO           shift, and go to state 7
+    LP           shift, and go to state 8
+    PRINT        shift, and go to state 9
+    INT          shift, and go to state 10
+
+    program                    转到状态 11
+    definition_or_statement    转到状态 12
+    expression                 转到状态 13
+    logical_expression         转到状态 14
+    additive_expression        转到状态 15
+    multiplicative_expression  转到状态 16
+    primary_expression         转到状态 17
+    statement                  转到状态 18
+    define_statement           转到状态 19
+    if_statement               转到状态 20
+    while_statement            转到状态 21
+    do_while_statement         转到状态 22
+    for_statement              转到状态 23
+    break_statement            转到状态 24
+
+
+State 1
+
+   24 primary_expression: INT_LITERAL .
+
+    $default  reduce using rule 24 (primary_expression)
+
+
+State 2
+
+    7 expression: IDENTIFIER . ASSIGN expression
+   23 primary_expression: IDENTIFIER .
+
+    ASSIGN  shift, and go to state 25
+
+    $default  reduce using rule 23 (primary_expression)
+
+
+State 3
+
+   34 if_statement: IF . LP expression RP block
+   35             | IF . LP expression RP block ELSE block
+
+    LP  shift, and go to state 26
+
+
+State 4
+
+   39 break_statement: BREAK . SEMICOLON
+
+    SEMICOLON  shift, and go to state 27
+
+
+State 5
+
+   38 for_statement: FOR . LP expression_opt SEMICOLON expression_opt SEMICOLON expression_opt RP block
+
+    LP  shift, and go to state 28
+
+
+State 6
+
+   36 while_statement: WHILE . LP expression_opt RP block
+
+    LP  shift, and go to state 29
+
+
+State 7
+
+   37 do_while_statement: DO . block WHILE LP expression_opt RP SEMICOLON
+
+    LC  shift, and go to state 30
+
+    block  转到状态 31
+
+
+State 8
+
+   22 primary_expression: LP . expression RP
+
+    INT_LITERAL  shift, and go to state 1
+    IDENTIFIER   shift, and go to state 2
+    LP           shift, and go to state 8
+
+    expression                 转到状态 32
+    logical_expression         转到状态 14
+    additive_expression        转到状态 15
+    multiplicative_expression  转到状态 16
+    primary_expression         转到状态 17
+
+
+State 9
+
+   26 statement: PRINT . LP expression RP SEMICOLON
+
+    LP  shift, and go to state 33
+
+
+State 10
+
+   33 define_statement: INT . IDENTIFIER SEMICOLON
+
+    IDENTIFIER  shift, and go to state 34
+
+
+State 11
+
+    0 $accept: program . $end
+    2 program: program . definition_or_statement
+
+    $end         shift, and go to state 35
+    INT_LITERAL  shift, and go to state 1
+    IDENTIFIER   shift, and go to state 2
+    IF           shift, and go to state 3
+    BREAK        shift, and go to state 4
+    FOR          shift, and go to state 5
+    WHILE        shift, and go to state 6
+    DO           shift, and go to state 7
+    LP           shift, and go to state 8
+    PRINT        shift, and go to state 9
+    INT          shift, and go to state 10
+
+    definition_or_statement    转到状态 36
+    expression                 转到状态 13
+    logical_expression         转到状态 14
+    additive_expression        转到状态 15
+    multiplicative_expression  转到状态 16
+    primary_expression         转到状态 17
+    statement                  转到状态 18
+    define_statement           转到状态 19
+    if_statement               转到状态 20
+    while_statement            转到状态 21
+    do_while_statement         转到状态 22
+    for_statement              转到状态 23
+    break_statement            转到状态 24
+
+
+State 12
+
+    1 program: definition_or_statement .
+
+    $default  reduce using rule 1 (program)
+
+
+State 13
+
+   25 statement: expression . SEMICOLON
+
+    SEMICOLON  shift, and go to state 37
+
+
+State 14
+
+    6 expression: logical_expression .
+    9 logical_expression: logical_expression . NE additive_expression
+   10                   | logical_expression . EQ additive_expression
+   11                   | logical_expression . GT additive_expression
+   12                   | logical_expression . GE additive_expression
+   13                   | logical_expression . LT additive_expression
+   14                   | logical_expression . LE additive_expression
+
+    EQ  shift, and go to state 38
+    NE  shift, and go to state 39
+    GT  shift, and go to state 40
+    GE  shift, and go to state 41
+    LT  shift, and go to state 42
+    LE  shift, and go to state 43
+
+    $default  reduce using rule 6 (expression)
+
+
+State 15
+
+    8 logical_expression: additive_expression .
+   16 additive_expression: additive_expression . ADD multiplicative_expression
+   17                    | additive_expression . SUB multiplicative_expression
+
+    ADD  shift, and go to state 44
+    SUB  shift, and go to state 45
+
+    $default  reduce using rule 8 (logical_expression)
+
+
+State 16
+
+   15 additive_expression: multiplicative_expression .
+   19 multiplicative_expression: multiplicative_expression . MUL primary_expression
+   20                          | multiplicative_expression . DIV primary_expression
+   21                          | multiplicative_expression . MOD primary_expression
+
+    MUL  shift, and go to state 46
+    DIV  shift, and go to state 47
+    MOD  shift, and go to state 48
+
+    $default  reduce using rule 15 (additive_expression)
+
+
+State 17
+
+   18 multiplicative_expression: primary_expression .
+
+    $default  reduce using rule 18 (multiplicative_expression)
+
+
+State 18
+
+    3 definition_or_statement: statement .
+
+    $default  reduce using rule 3 (definition_or_statement)
+
+
+State 19
+
+   30 statement: define_statement .
+
+    $default  reduce using rule 30 (statement)
+
+
+State 20
+
+   27 statement: if_statement .
+
+    $default  reduce using rule 27 (statement)
+
+
+State 21
+
+   31 statement: while_statement .
+
+    $default  reduce using rule 31 (statement)
+
+
+State 22
+
+   32 statement: do_while_statement .
+
+    $default  reduce using rule 32 (statement)
+
+
+State 23
+
+   28 statement: for_statement .
+
+    $default  reduce using rule 28 (statement)
+
+
+State 24
+
+   29 statement: break_statement .
+
+    $default  reduce using rule 29 (statement)
+
+
+State 25
+
+    7 expression: IDENTIFIER ASSIGN . expression
+
+    INT_LITERAL  shift, and go to state 1
+    IDENTIFIER   shift, and go to state 2
+    LP           shift, and go to state 8
+
+    expression                 转到状态 49
+    logical_expression         转到状态 14
+    additive_expression        转到状态 15
+    multiplicative_expression  转到状态 16
+    primary_expression         转到状态 17
+
+
+State 26
+
+   34 if_statement: IF LP . expression RP block
+   35             | IF LP . expression RP block ELSE block
+
+    INT_LITERAL  shift, and go to state 1
+    IDENTIFIER   shift, and go to state 2
+    LP           shift, and go to state 8
+
+    expression                 转到状态 50
+    logical_expression         转到状态 14
+    additive_expression        转到状态 15
+    multiplicative_expression  转到状态 16
+    primary_expression         转到状态 17
+
+
+State 27
+
+   39 break_statement: BREAK SEMICOLON .
+
+    $default  reduce using rule 39 (break_statement)
+
+
+State 28
+
+   38 for_statement: FOR LP . expression_opt SEMICOLON expression_opt SEMICOLON expression_opt RP block
+
+    INT_LITERAL  shift, and go to state 1
+    IDENTIFIER   shift, and go to state 2
+    LP           shift, and go to state 8
+
+    $default  reduce using rule 40 (expression_opt)
+
+    expression                 转到状态 51
+    logical_expression         转到状态 14
+    additive_expression        转到状态 15
+    multiplicative_expression  转到状态 16
+    primary_expression         转到状态 17
+    expression_opt             转到状态 52
+
+
+State 29
+
+   36 while_statement: WHILE LP . expression_opt RP block
+
+    INT_LITERAL  shift, and go to state 1
+    IDENTIFIER   shift, and go to state 2
+    LP           shift, and go to state 8
+
+    $default  reduce using rule 40 (expression_opt)
+
+    expression                 转到状态 51
+    logical_expression         转到状态 14
+    additive_expression        转到状态 15
+    multiplicative_expression  转到状态 16
+    primary_expression         转到状态 17
+    expression_opt             转到状态 53
+
+
+State 30
+
+   42 block: LC . statement_list RC
+   43      | LC . RC
+
+    INT_LITERAL  shift, and go to state 1
+    IDENTIFIER   shift, and go to state 2
+    IF           shift, and go to state 3
+    BREAK        shift, and go to state 4
+    FOR          shift, and go to state 5
+    WHILE        shift, and go to state 6
+    DO           shift, and go to state 7
+    LP           shift, and go to state 8
+    RC           shift, and go to state 54
+    PRINT        shift, and go to state 9
+    INT          shift, and go to state 10
+
+    statement_list             转到状态 55
+    expression                 转到状态 13
+    logical_expression         转到状态 14
+    additive_expression        转到状态 15
+    multiplicative_expression  转到状态 16
+    primary_expression         转到状态 17
+    statement                  转到状态 56
+    define_statement           转到状态 19
+    if_statement               转到状态 20
+    while_statement            转到状态 21
+    do_while_statement         转到状态 22
+    for_statement              转到状态 23
+    break_statement            转到状态 24
+
+
+State 31
+
+   37 do_while_statement: DO block . WHILE LP expression_opt RP SEMICOLON
+
+    WHILE  shift, and go to state 57
+
+
+State 32
+
+   22 primary_expression: LP expression . RP
+
+    RP  shift, and go to state 58
+
+
+State 33
+
+   26 statement: PRINT LP . expression RP SEMICOLON
+
+    INT_LITERAL  shift, and go to state 1
+    IDENTIFIER   shift, and go to state 2
+    LP           shift, and go to state 8
+
+    expression                 转到状态 59
+    logical_expression         转到状态 14
+    additive_expression        转到状态 15
+    multiplicative_expression  转到状态 16
+    primary_expression         转到状态 17
+
+
+State 34
+
+   33 define_statement: INT IDENTIFIER . SEMICOLON
+
+    SEMICOLON  shift, and go to state 60
+
+
+State 35
+
+    0 $accept: program $end .
+
+    $default  接受
+
+
+State 36
+
+    2 program: program definition_or_statement .
+
+    $default  reduce using rule 2 (program)
+
+
+State 37
+
+   25 statement: expression SEMICOLON .
+
+    $default  reduce using rule 25 (statement)
+
+
+State 38
+
+   10 logical_expression: logical_expression EQ . additive_expression
+
+    INT_LITERAL  shift, and go to state 1
+    IDENTIFIER   shift, and go to state 61
+    LP           shift, and go to state 8
+
+    additive_expression        转到状态 62
+    multiplicative_expression  转到状态 16
+    primary_expression         转到状态 17
+
+
+State 39
+
+    9 logical_expression: logical_expression NE . additive_expression
+
+    INT_LITERAL  shift, and go to state 1
+    IDENTIFIER   shift, and go to state 61
+    LP           shift, and go to state 8
+
+    additive_expression        转到状态 63
+    multiplicative_expression  转到状态 16
+    primary_expression         转到状态 17
+
+
+State 40
+
+   11 logical_expression: logical_expression GT . additive_expression
+
+    INT_LITERAL  shift, and go to state 1
+    IDENTIFIER   shift, and go to state 61
+    LP           shift, and go to state 8
+
+    additive_expression        转到状态 64
+    multiplicative_expression  转到状态 16
+    primary_expression         转到状态 17
+
+
+State 41
+
+   12 logical_expression: logical_expression GE . additive_expression
+
+    INT_LITERAL  shift, and go to state 1
+    IDENTIFIER   shift, and go to state 61
+    LP           shift, and go to state 8
+
+    additive_expression        转到状态 65
+    multiplicative_expression  转到状态 16
+    primary_expression         转到状态 17
+
+
+State 42
+
+   13 logical_expression: logical_expression LT . additive_expression
+
+    INT_LITERAL  shift, and go to state 1
+    IDENTIFIER   shift, and go to state 61
+    LP           shift, and go to state 8
+
+    additive_expression        转到状态 66
+    multiplicative_expression  转到状态 16
+    primary_expression         转到状态 17
+
+
+State 43
+
+   14 logical_expression: logical_expression LE . additive_expression
+
+    INT_LITERAL  shift, and go to state 1
+    IDENTIFIER   shift, and go to state 61
+    LP           shift, and go to state 8
+
+    additive_expression        转到状态 67
+    multiplicative_expression  转到状态 16
+    primary_expression         转到状态 17
+
+
+State 44
+
+   16 additive_expression: additive_expression ADD . multiplicative_expression
+
+    INT_LITERAL  shift, and go to state 1
+    IDENTIFIER   shift, and go to state 61
+    LP           shift, and go to state 8
+
+    multiplicative_expression  转到状态 68
+    primary_expression         转到状态 17
+
+
+State 45
+
+   17 additive_expression: additive_expression SUB . multiplicative_expression
+
+    INT_LITERAL  shift, and go to state 1
+    IDENTIFIER   shift, and go to state 61
+    LP           shift, and go to state 8
+
+    multiplicative_expression  转到状态 69
+    primary_expression         转到状态 17
+
+
+State 46
+
+   19 multiplicative_expression: multiplicative_expression MUL . primary_expression
+
+    INT_LITERAL  shift, and go to state 1
+    IDENTIFIER   shift, and go to state 61
+    LP           shift, and go to state 8
+
+    primary_expression  转到状态 70
+
+
+State 47
+
+   20 multiplicative_expression: multiplicative_expression DIV . primary_expression
+
+    INT_LITERAL  shift, and go to state 1
+    IDENTIFIER   shift, and go to state 61
+    LP           shift, and go to state 8
+
+    primary_expression  转到状态 71
+
+
+State 48
+
+   21 multiplicative_expression: multiplicative_expression MOD . primary_expression
+
+    INT_LITERAL  shift, and go to state 1
+    IDENTIFIER   shift, and go to state 61
+    LP           shift, and go to state 8
+
+    primary_expression  转到状态 72
+
+
+State 49
+
+    7 expression: IDENTIFIER ASSIGN expression .
+
+    $default  reduce using rule 7 (expression)
+
+
+State 50
+
+   34 if_statement: IF LP expression . RP block
+   35             | IF LP expression . RP block ELSE block
+
+    RP  shift, and go to state 73
+
+
+State 51
+
+   41 expression_opt: expression .
+
+    $default  reduce using rule 41 (expression_opt)
+
+
+State 52
+
+   38 for_statement: FOR LP expression_opt . SEMICOLON expression_opt SEMICOLON expression_opt RP block
+
+    SEMICOLON  shift, and go to state 74
+
+
+State 53
+
+   36 while_statement: WHILE LP expression_opt . RP block
+
+    RP  shift, and go to state 75
+
+
+State 54
+
+   43 block: LC RC .
+
+    $default  reduce using rule 43 (block)
+
+
+State 55
+
+    5 statement_list: statement_list . statement
+   42 block: LC statement_list . RC
+
+    INT_LITERAL  shift, and go to state 1
+    IDENTIFIER   shift, and go to state 2
+    IF           shift, and go to state 3
+    BREAK        shift, and go to state 4
+    FOR          shift, and go to state 5
+    WHILE        shift, and go to state 6
+    DO           shift, and go to state 7
+    LP           shift, and go to state 8
+    RC           shift, and go to state 76
+    PRINT        shift, and go to state 9
+    INT          shift, and go to state 10
+
+    expression                 转到状态 13
+    logical_expression         转到状态 14
+    additive_expression        转到状态 15
+    multiplicative_expression  转到状态 16
+    primary_expression         转到状态 17
+    statement                  转到状态 77
+    define_statement           转到状态 19
+    if_statement               转到状态 20
+    while_statement            转到状态 21
+    do_while_statement         转到状态 22
+    for_statement              转到状态 23
+    break_statement            转到状态 24
+
+
+State 56
+
+    4 statement_list: statement .
+
+    $default  reduce using rule 4 (statement_list)
+
+
+State 57
+
+   37 do_while_statement: DO block WHILE . LP expression_opt RP SEMICOLON
+
+    LP  shift, and go to state 78
+
+
+State 58
+
+   22 primary_expression: LP expression RP .
+
+    $default  reduce using rule 22 (primary_expression)
+
+
+State 59
+
+   26 statement: PRINT LP expression . RP SEMICOLON
+
+    RP  shift, and go to state 79
+
+
+State 60
+
+   33 define_statement: INT IDENTIFIER SEMICOLON .
+
+    $default  reduce using rule 33 (define_statement)
+
+
+State 61
+
+   23 primary_expression: IDENTIFIER .
+
+    $default  reduce using rule 23 (primary_expression)
+
+
+State 62
+
+   10 logical_expression: logical_expression EQ additive_expression .
+   16 additive_expression: additive_expression . ADD multiplicative_expression
+   17                    | additive_expression . SUB multiplicative_expression
+
+    ADD  shift, and go to state 44
+    SUB  shift, and go to state 45
+
+    $default  reduce using rule 10 (logical_expression)
+
+
+State 63
+
+    9 logical_expression: logical_expression NE additive_expression .
+   16 additive_expression: additive_expression . ADD multiplicative_expression
+   17                    | additive_expression . SUB multiplicative_expression
+
+    ADD  shift, and go to state 44
+    SUB  shift, and go to state 45
+
+    $default  reduce using rule 9 (logical_expression)
+
+
+State 64
+
+   11 logical_expression: logical_expression GT additive_expression .
+   16 additive_expression: additive_expression . ADD multiplicative_expression
+   17                    | additive_expression . SUB multiplicative_expression
+
+    ADD  shift, and go to state 44
+    SUB  shift, and go to state 45
+
+    $default  reduce using rule 11 (logical_expression)
+
+
+State 65
+
+   12 logical_expression: logical_expression GE additive_expression .
+   16 additive_expression: additive_expression . ADD multiplicative_expression
+   17                    | additive_expression . SUB multiplicative_expression
+
+    ADD  shift, and go to state 44
+    SUB  shift, and go to state 45
+
+    $default  reduce using rule 12 (logical_expression)
+
+
+State 66
+
+   13 logical_expression: logical_expression LT additive_expression .
+   16 additive_expression: additive_expression . ADD multiplicative_expression
+   17                    | additive_expression . SUB multiplicative_expression
+
+    ADD  shift, and go to state 44
+    SUB  shift, and go to state 45
+
+    $default  reduce using rule 13 (logical_expression)
+
+
+State 67
+
+   14 logical_expression: logical_expression LE additive_expression .
+   16 additive_expression: additive_expression . ADD multiplicative_expression
+   17                    | additive_expression . SUB multiplicative_expression
+
+    ADD  shift, and go to state 44
+    SUB  shift, and go to state 45
+
+    $default  reduce using rule 14 (logical_expression)
+
+
+State 68
+
+   16 additive_expression: additive_expression ADD multiplicative_expression .
+   19 multiplicative_expression: multiplicative_expression . MUL primary_expression
+   20                          | multiplicative_expression . DIV primary_expression
+   21                          | multiplicative_expression . MOD primary_expression
+
+    MUL  shift, and go to state 46
+    DIV  shift, and go to state 47
+    MOD  shift, and go to state 48
+
+    $default  reduce using rule 16 (additive_expression)
+
+
+State 69
+
+   17 additive_expression: additive_expression SUB multiplicative_expression .
+   19 multiplicative_expression: multiplicative_expression . MUL primary_expression
+   20                          | multiplicative_expression . DIV primary_expression
+   21                          | multiplicative_expression . MOD primary_expression
+
+    MUL  shift, and go to state 46
+    DIV  shift, and go to state 47
+    MOD  shift, and go to state 48
+
+    $default  reduce using rule 17 (additive_expression)
+
+
+State 70
+
+   19 multiplicative_expression: multiplicative_expression MUL primary_expression .
+
+    $default  reduce using rule 19 (multiplicative_expression)
+
+
+State 71
+
+   20 multiplicative_expression: multiplicative_expression DIV primary_expression .
+
+    $default  reduce using rule 20 (multiplicative_expression)
+
+
+State 72
+
+   21 multiplicative_expression: multiplicative_expression MOD primary_expression .
+
+    $default  reduce using rule 21 (multiplicative_expression)
+
+
+State 73
+
+   34 if_statement: IF LP expression RP . block
+   35             | IF LP expression RP . block ELSE block
+
+    LC  shift, and go to state 30
+
+    block  转到状态 80
+
+
+State 74
+
+   38 for_statement: FOR LP expression_opt SEMICOLON . expression_opt SEMICOLON expression_opt RP block
+
+    INT_LITERAL  shift, and go to state 1
+    IDENTIFIER   shift, and go to state 2
+    LP           shift, and go to state 8
+
+    $default  reduce using rule 40 (expression_opt)
+
+    expression                 转到状态 51
+    logical_expression         转到状态 14
+    additive_expression        转到状态 15
+    multiplicative_expression  转到状态 16
+    primary_expression         转到状态 17
+    expression_opt             转到状态 81
+
+
+State 75
+
+   36 while_statement: WHILE LP expression_opt RP . block
+
+    LC  shift, and go to state 30
+
+    block  转到状态 82
+
+
+State 76
+
+   42 block: LC statement_list RC .
+
+    $default  reduce using rule 42 (block)
+
+
+State 77
+
+    5 statement_list: statement_list statement .
+
+    $default  reduce using rule 5 (statement_list)
+
+
+State 78
+
+   37 do_while_statement: DO block WHILE LP . expression_opt RP SEMICOLON
+
+    INT_LITERAL  shift, and go to state 1
+    IDENTIFIER   shift, and go to state 2
+    LP           shift, and go to state 8
+
+    $default  reduce using rule 40 (expression_opt)
+
+    expression                 转到状态 51
+    logical_expression         转到状态 14
+    additive_expression        转到状态 15
+    multiplicative_expression  转到状态 16
+    primary_expression         转到状态 17
+    expression_opt             转到状态 83
+
+
+State 79
+
+   26 statement: PRINT LP expression RP . SEMICOLON
+
+    SEMICOLON  shift, and go to state 84
+
+
+State 80
+
+   34 if_statement: IF LP expression RP block .
+   35             | IF LP expression RP block . ELSE block
+
+    ELSE  shift, and go to state 85
+
+    $default  reduce using rule 34 (if_statement)
+
+
+State 81
+
+   38 for_statement: FOR LP expression_opt SEMICOLON expression_opt . SEMICOLON expression_opt RP block
+
+    SEMICOLON  shift, and go to state 86
+
+
+State 82
+
+   36 while_statement: WHILE LP expression_opt RP block .
+
+    $default  reduce using rule 36 (while_statement)
+
+
+State 83
+
+   37 do_while_statement: DO block WHILE LP expression_opt . RP SEMICOLON
+
+    RP  shift, and go to state 87
+
+
+State 84
+
+   26 statement: PRINT LP expression RP SEMICOLON .
+
+    $default  reduce using rule 26 (statement)
+
+
+State 85
+
+   35 if_statement: IF LP expression RP block ELSE . block
+
+    LC  shift, and go to state 30
+
+    block  转到状态 88
+
+
+State 86
+
+   38 for_statement: FOR LP expression_opt SEMICOLON expression_opt SEMICOLON . expression_opt RP block
+
+    INT_LITERAL  shift, and go to state 1
+    IDENTIFIER   shift, and go to state 2
+    LP           shift, and go to state 8
+
+    $default  reduce using rule 40 (expression_opt)
+
+    expression                 转到状态 51
+    logical_expression         转到状态 14
+    additive_expression        转到状态 15
+    multiplicative_expression  转到状态 16
+    primary_expression         转到状态 17
+    expression_opt             转到状态 89
+
+
+State 87
+
+   37 do_while_statement: DO block WHILE LP expression_opt RP . SEMICOLON
+
+    SEMICOLON  shift, and go to state 90
+
+
+State 88
+
+   35 if_statement: IF LP expression RP block ELSE block .
+
+    $default  reduce using rule 35 (if_statement)
+
+
+State 89
+
+   38 for_statement: FOR LP expression_opt SEMICOLON expression_opt SEMICOLON expression_opt . RP block
+
+    RP  shift, and go to state 91
+
+
+State 90
+
+   37 do_while_statement: DO block WHILE LP expression_opt RP SEMICOLON .
+
+    $default  reduce using rule 37 (do_while_statement)
+
+
+State 91
+
+   38 for_statement: FOR LP expression_opt SEMICOLON expression_opt SEMICOLON expression_opt RP . block
+
+    LC  shift, and go to state 30
+
+    block  转到状态 92
+
+
+State 92
+
+   38 for_statement: FOR LP expression_opt SEMICOLON expression_opt SEMICOLON expression_opt RP block .
+
+    $default  reduce using rule 38 (for_statement)
